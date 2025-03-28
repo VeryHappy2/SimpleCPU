@@ -3,28 +3,43 @@
 
 #include <iostream>
 #include "./core/CPU.h"
+#include <fstream>
 
-int main()
+int main(int argc, char* argv[])
 {
-    CPU cpu;
-    std::vector<u8> program = {
-        MOVMEM, 0x02C, 0x0D,
-        MOVMEM, 0x03D, 0x0E,
-        MOVA, 0x14,
-        MOVB, 0x20,
-        NOP,
-        ADD, REG, A, IMM, 0x02C, MEM, 0x03D,
-        ADD, MEM, 0x03D, REG, A, REG, B,
-        ADD, MEM, 0x02C, MEM, 0x02C, MEM, 0x03D,
-        HLR,
-    };
-    cpu.executeProgram(program);
-    const u8 val1 = cpu[0x03D];
-    const u8 val2 = cpu[0x2C];
-    std::cout << "0x02C: " << static_cast<int>(val1) << std::endl;
-    std::cout << "0x03D: " << static_cast<int>(val2) << std::endl;
-    std::cout << "A: " << static_cast<int>(cpu.regA) << std::endl;
-    std::cout << "B: " << static_cast<int>(cpu.regB) << std::endl;
+    std::vector<u8> program;
+    if (argc == 2)
+    {
+        if (argv[1] == nullptr) {
+            std::cerr << "You need to type the path of the binary file" << std::endl;
+        }
+
+        std::ifstream file(argv[1], std::ios::binary);
+        if (!file) {
+            std::cerr << "Not found\n";
+            return 1;
+        }
+        std::vector<u8> program(
+            (std::istreambuf_iterator<char>(file)),
+            std::istreambuf_iterator<char>()
+        );    
+        CPU cpu;
+        cpu.executeProgram(program);
+
+        std::cout << "A: " << static_cast<int>(cpu.regA) << std::endl;
+        std::cout << "B: " << static_cast<int>(cpu.regB) << std::endl;
+        for (size_t i = 0; i < 1024; i++)
+        {
+            if (cpu[i] == '\0')
+                continue;
+
+            std::cout << "Index: " << i << cpu[i] << std::endl;
+        }
+    } else {
+        return 1;
+    }
+
+
     return 0;
 }
 

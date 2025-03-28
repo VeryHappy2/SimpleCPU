@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.lua": "glua",
+        "*.asm": "gas",
+        "fstream": "cpp",
+        "vector": "cpp"
+    }
+}

@@ -48,6 +48,52 @@ void CPU::execute(u8 instruction) {
             pc += 2;
             writeMemory(memory[pc - 1], memory[pc]);
             break;
+        case SUB: {
+            u8 type = memory[pc + 1];
+            if (type == IMM) {
+                std::cout << "Here cannot be imm: " << memory[pc + 1] << std::endl;
+                running = false;
+            }
+            u8 operand1 = getValue(memory[pc + 3], memory[pc + 4]);
+            u8 operand2 = getValue(memory[pc + 5], memory[pc + 6]);
+
+            u8 result = operand1 - operand2;
+            if (type == REG) {
+                changeRegister(memory[pc + 2], result);
+            }
+            else if (type == MEM) {
+                writeMemory(memory[pc + 2], result);
+            }
+            else {
+                std::cout << "Unknown instruction: " << static_cast<unsigned int>(memory[pc]) << std::endl;
+                running = false;
+            }
+            pc += 6;
+            break;
+        }
+        case DIV: {
+            u8 type = memory[pc + 1];
+            if (type == IMM) {
+                std::cout << "Here cannot be imm: " << memory[pc + 1] << std::endl;
+                running = false;
+            }
+            u8 operand1 = getValue(memory[pc + 3], memory[pc + 4]);
+            u8 operand2 = getValue(memory[pc + 5], memory[pc + 6]);
+
+            u8 result = operand1 / operand2;
+            if (type == REG) {
+                changeRegister(memory[pc + 2], result);
+            }
+            else if (type == MEM) {
+                writeMemory(memory[pc + 2], result);
+            }
+            else {
+                std::cout << "Unknown instruction: " << static_cast<unsigned int>(memory[pc]) << std::endl;
+                running = false;
+            }
+            pc += 6;
+            break;
+        }
         case JMP:
             pc++;
             pc = memory[pc];

@@ -29,5 +29,8 @@
     <ClInclude Include="core\CPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

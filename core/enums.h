@@ -9,6 +9,9 @@ enum Instruction
     MOVB = 0x05,
     MOVMEM = 0x06,
     JMP = 0x07,
+    SUB = 0x08,
+    DIV = 0x09,
+    MUL = 0x10,
     HLR = 0xFF,
 };
 

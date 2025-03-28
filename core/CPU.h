@@ -4,10 +4,12 @@
 #include <vector>
 
 using u8 = uint8_t;
+
 class CPU
 {
 private:
     u8 pc = 0;
+    u8 getValue(u8 type, u8 val);
 public:
     bool running;
     u8 regA = 0;
@@ -22,7 +24,6 @@ public:
 
     void run();
     void writeMemory(u8 index, u8 value);
-    u8 getValue(u8 type, u8 val);
 
     void reset() {
         running = false;
@@ -34,12 +35,12 @@ public:
         }
     }
 
-    u8 operator[](u8 address) const
+    u8 operator[](uint16_t address) const
     {
         return memory[address];
     }
 
-    u8& operator[](u8 address)
+    u8& operator[](uint16_t address)
     {
         return memory[address];
     }
@@ -47,6 +48,5 @@ public:
     void loadProgram(std::vector<u8>& program);
     void changeRegister(u8 reg, u8 val);
     void execute(u8 instruction);
-    void loadProgram(const std::vector<uint8_t>& program);
     void executeProgram(std::vector<u8>& program);
 };
